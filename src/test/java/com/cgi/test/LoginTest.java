@@ -1,33 +1,40 @@
 package com.cgi.test;
 
-import org.openqa.selenium.By;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
 import com.cgi.base.AutomationWrapper;
+import com.cgi.pages.DashboardPage;
+import com.cgi.pages.LoginPage;
 import com.cgi.utils.DataUtils;
 
 public class LoginTest extends AutomationWrapper {
 
-	@Test
-	public void validLoginTest() {
-		driver.findElement(By.name("username")).sendKeys("Admin");
-		driver.findElement(By.name("password")).sendKeys("admin123");
-		driver.findElement(By.xpath("//button[normalize-space()='Login']")).click();
+	@Test(dataProviderClass = DataUtils.class, dataProvider = "commonDataProvider", groups = { "login", "smoke" })
+	public void validLoginTest(String username, String password, String expectedValue) {
+
+		LoginPage login = new LoginPage(driver);
+		login.EnterUsername(username);
+		login.EnterPassword(password);
+		login.clickOnLogin();
 
 		// Assert the text - Quick Launch
-		String actualText = driver.findElement(By.xpath("//p[contains(normalize-space(),'Quick')]")).getText();
-		Assert.assertEquals(actualText, "Quick Launch");
+		DashboardPage dashboard = new DashboardPage(driver);
+		String actualText = dashboard.getQuickLaunchText();
+
+		Assert.assertEquals(actualText, expectedValue);
 	}
 
-	@Test(dataProviderClass = DataUtils.class, dataProvider = "commonDataProvider")
+	@Test(dataProviderClass = DataUtils.class, dataProvider = "commonDataProvider", groups = { "login" })
 	public void invalidLoginTest(String username, String password, String expectedError) {
-		driver.findElement(By.name("username")).sendKeys(username);
-		driver.findElement(By.name("password")).sendKeys(password);
-		driver.findElement(By.xpath("//button[normalize-space()='Login']")).click();
+
+		LoginPage login = new LoginPage(driver);
+		login.EnterUsername(username);
+		login.EnterPassword(password);
+		login.clickOnLogin();
 
 		// Assert the error shown - Invalid credentials
-		String actualError = driver.findElement(By.xpath("//p[contains(normalize-space(),'Invalid')]")).getText();
+		String actualError = login.getInvalidErrorMessage();
 		Assert.assertEquals(actualError, expectedError);
 	}
 }
