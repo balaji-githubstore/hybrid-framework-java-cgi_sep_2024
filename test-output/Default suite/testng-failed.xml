@@ -7,7 +7,7 @@
         <methods>
           <include name="setup"/>
           <include name="teardown"/>
-          <include name="invalidLoginTest"/>
+          <include name="invalidLoginTest" invocation-numbers="1"/>
         </methods>
       </class> <!-- com.cgi.test.LoginTest -->
     </classes>

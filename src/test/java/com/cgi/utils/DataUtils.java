@@ -1,5 +1,8 @@
 package com.cgi.utils;
 
+import java.io.IOException;
+import java.lang.reflect.Method;
+
 import org.testng.annotations.DataProvider;
 
 public class DataUtils {
@@ -18,5 +21,19 @@ public class DataUtils {
 
 		return data;
 	}
+	
+	@DataProvider
+	public Object[][] commonDataProvider(Method method) throws IOException
+	{
+		//get @Test name dynamically - because sheetname is the @Test name
+		//@test name is sheetname
+		String testName=method.getName();
+		
+		Object[][] data= ExcelUtils.getSheetIntoTwoDimensionalArray("test_data/orange_data.xlsx", testName);
+		return data;
+	}
 
+	//will 
+	
+	
 }
