@@ -27,9 +27,9 @@ public class DataUtils {
 	{
 		//get @Test name dynamically - because sheetname is the @Test name
 		//@test name is sheetname
-		String testName=method.getName();
+		String testMethodName=method.getName();
 		
-		Object[][] data= ExcelUtils.getSheetIntoTwoDimensionalArray("test_data/orange_data.xlsx", testName);
+		Object[][] data= ExcelUtils.getSheetIntoTwoDimensionalArray("test_data/orange_data.xlsx", testMethodName);
 		return data;
 	}
 	
